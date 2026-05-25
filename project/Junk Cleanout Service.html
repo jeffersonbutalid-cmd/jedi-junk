@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Junk Cleanout Service · JEDI Junk Removal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+/* ===== Brand tokens (canonical) — shared with Same-Day Junk Removal ===== */
+:root {
+  --jet-black: #0B0B0B;
+  --jet-black-soft: #141414;
+  --jedi-green: #1FBD1F;
+  --jedi-green-deep: #149814;
+  --hauler-yellow: #FFC319;
+  --paper: #FFFFFF;
+  --gray-50: #F4F5F4;
+  --gray-100: #ECEDEC;
+  --gray-200: #DEDFDE;
+  --gray-300: #C8C9C8;
+  --gray-500: #6B6D6B;
+  --gray-700: #2A2C2A;
+  --footer-gray: #1A1B1A;
+
+  --font-display: 'Bebas Neue', 'Impact', sans-serif;
+  --font-body: 'Montserrat', -apple-system, system-ui, sans-serif;
+
+  --maxw: 1240px;
+  --pad-x: clamp(20px, 5vw, 56px);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  color: var(--jet-black);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-size: 16px;
+  line-height: 1.55;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input, textarea, select { font-family: inherit; }
+
+.section { padding: clamp(56px, 9vw, 112px) var(--pad-x); }
+.section-tight { padding: clamp(36px, 6vw, 64px) var(--pad-x); }
+.wrap { max-width: var(--maxw); margin: 0 auto; }
+
+/* CTAs */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 10px; padding: 18px 28px; border-radius: 999px;
+  font-family: var(--font-body); font-weight: 900;
+  font-size: 17px; letter-spacing: 0.04em; text-transform: uppercase;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+  white-space: nowrap; cursor: pointer;
+  border: 2px solid transparent;
+}
+.btn:active { transform: translateY(1px) scale(0.99); }
+.btn-primary {
+  background: var(--jedi-green);
+  color: var(--jet-black);
+  box-shadow: 0 6px 0 0 var(--jedi-green-deep), 0 12px 24px rgba(31,189,31,0.25);
+}
+.btn-primary:hover {
+  background: #25d325;
+  box-shadow: 0 4px 0 0 var(--jedi-green-deep), 0 14px 28px rgba(31,189,31,0.35);
+  transform: translateY(-1px);
+}
+.btn-ghost {
+  background: transparent; color: var(--paper);
+  border: 2px solid rgba(255,255,255,0.45);
+}
+.btn-ghost:hover { border-color: var(--paper); background: rgba(255,255,255,0.06); }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--hauler-yellow); color: var(--jet-black);
+  font-weight: 900; font-size: 13px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 9px 16px; border-radius: 999px;
+}
+
+.trust-row {
+  display: flex; flex-wrap: wrap; gap: 6px 22px; align-items: center;
+  color: rgba(255,255,255,0.85); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+}
+.trust-row .star { color: var(--jedi-green); margin-right: 6px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--gray-500);
+}
+.field input, .field textarea, .field select {
+  background: var(--gray-50);
+  border: 1.5px solid var(--gray-200);
+  padding: 14px 16px;
+  border-radius: 10px;
+  font-size: 16px;
+  color: var(--jet-black);
+  outline: none;
+  transition: border-color 0.12s ease, background 0.12s ease;
+  appearance: none;
+}
+.field input:focus, .field textarea:focus, .field select:focus {
+  border-color: var(--jedi-green);
+  background: var(--paper);
+}
+.field textarea { resize: vertical; min-height: 96px; font-family: inherit; }
+.field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236B6D6B' d='M6 8 0 0h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 10px 7px;
+  padding-right: 40px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+.mobile-spacer { display: none; height: 76px; }
+@media (max-width: 899px) {
+  .mobile-spacer { display: block; }
+}
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<!-- React + Babel -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="cleanout-top.jsx"></script>
+<script type="text/babel" src="cleanout-mid.jsx"></script>
+<script type="text/babel" src="cleanout-bot.jsx"></script>
+<script type="text/babel" src="cleanout-main.jsx"></script>
+
+</body>
+</html>
