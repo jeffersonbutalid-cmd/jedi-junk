@@ -1,0 +1,17 @@
+# --- 301: legacy / mistyped slugs -> correct pages ---
+/hauling              /junk-hauling        301
+/hauling-experts      /junk-hauling        301
+/mattress/removal     /mattress-removal    301
+
+# --- known routes: serve the SPA (200 rewrite) ---
+/                     /index.html          200
+/cleanouts            /index.html          200
+/same-day             /index.html          200
+/mattress-removal     /index.html          200
+/junk-hauling         /index.html          200
+/orange-county        /index.html          200
+/booking-thank-you    /index.html          200
+/dashboard            /index.html          200
+
+# --- anything else: no silent fallback -> 301 to homepage ---
+/*                    /                    301
