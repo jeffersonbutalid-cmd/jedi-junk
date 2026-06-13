@@ -1,13 +1,9 @@
-import { useMemo, useState } from 'react';
-import { PHONE, PHONE_HREF, WORKIZ_URL } from './constants';
-import { buildWorkizUrl } from '../lib/tracking';
+import BookingForm from './BookingForm';
+import { PHONE, PHONE_HREF } from './constants';
 
 const SMS_HREF = 'sms:+18664879059?&body=Hi%20JEDI%20%E2%80%94%20I%20need%20a%20cleanout%20quote.';
 
 export default function FinalCTA() {
-  const [iframeLoaded, setIframeLoaded] = useState(false);
-  const workizUrl = useMemo(() => buildWorkizUrl(WORKIZ_URL), []);
-
   return (
     <section className="finalcta section" id="quote">
       <div className="finalcta-inner">
@@ -31,29 +27,11 @@ export default function FinalCTA() {
           <div className="booking-head">
             <div className="booking-head-l">
               <h3>BOOK A WALK-THROUGH</h3>
-              <p>Pick a window. We'll confirm and bring a quote on the spot.</p>
+              <p>Tell us a bit about the property. We'll confirm a window by text.</p>
             </div>
-            <span className="booking-badge">★ $20 OFF APPLIED</span>
+            <span className="booking-badge">★ FREE WALK-THROUGH</span>
           </div>
-          <div className="iframe-wrap">
-            <div className={'iframe-loading' + (iframeLoaded ? ' hidden' : '')}>
-              <div className="spinner" aria-hidden="true" />
-              <div>Loading secure booking…</div>
-            </div>
-            <iframe
-              src={workizUrl}
-              title="JEDI Junk Removal — book a cleanout walk-through"
-              loading="lazy"
-              allow="payment; geolocation; clipboard-write"
-              onLoad={() => setIframeLoaded(true)}
-            />
-          </div>
-          <div className="booking-foot">
-            Trouble with the form?{' '}
-            <a href={PHONE_HREF} className="phone-fallback">Call {PHONE}</a>
-            {' · '}
-            <span className="green">$20 off</span> applied automatically when you book online.
-          </div>
+          <BookingForm defaultService="Full cleanout" />
         </div>
       </div>
     </section>
