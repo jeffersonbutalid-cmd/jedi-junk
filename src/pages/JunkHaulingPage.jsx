@@ -1,11 +1,11 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState, useEffect, useMemo } from 'react';
 import Topbar from '../components/Topbar';
 import Footer from '../components/Footer';
 import MobileBottomBar from '../components/MobileBottomBar';
 import PricingStrip from '../components/PricingStrip';
-import BookingForm from '../components/BookingForm';
-import { PHONE, PHONE_HREF } from '../components/constants';
+import { PHONE, PHONE_HREF, WORKIZ_URL } from '../components/constants';
 import SmartImg from '../components/SmartImg';
+import { buildWorkizUrl } from '../lib/tracking';
 import { MEDIA, FALLBACK } from './media';
 
 const M = MEDIA.junkhauling;
@@ -359,6 +359,8 @@ function JunkHaulingFAQ() {
 }
 
 function JunkHaulingFinalCTA() {
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+  const workizUrl = useMemo(() => buildWorkizUrl(WORKIZ_URL), []);
   return (
     <section className="finalcta section" id="quote">
       <div className="finalcta-inner" style={{ maxWidth: 960 }}>
@@ -382,7 +384,26 @@ function JunkHaulingFinalCTA() {
             </div>
             <span className="booking-badge">★ FLAT QUOTE · NO SURPRISES</span>
           </div>
-          <BookingForm defaultService="Junk hauling" />
+          <div className="iframe-wrap">
+            <div className={'iframe-loading' + (iframeLoaded ? ' hidden' : '')}>
+              <div className="spinner" aria-hidden="true" />
+              <div>Loading secure booking…</div>
+            </div>
+            <iframe
+              src={workizUrl}
+              title="JEDI Junk Removal — book a haul"
+              loading="lazy"
+              allow="payment; geolocation; clipboard-write"
+              onLoad={() => setIframeLoaded(true)}
+            />
+          </div>
+          <div className="booking-foot">
+            Trouble with the form?{' '}
+            <a href={PHONE_HREF} className="phone-fallback">Call {PHONE}</a>
+            {' · or '}
+            <a href={SMS_HREF} className="phone-fallback">text a photo</a>
+            {' for a flat quote.'}
+          </div>
         </div>
       </div>
     </section>

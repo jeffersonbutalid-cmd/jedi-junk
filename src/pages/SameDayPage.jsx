@@ -1,11 +1,11 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState, useEffect, useMemo } from 'react';
 import Topbar from '../components/Topbar';
 import BeforeAfter from '../components/BeforeAfter';
 import Footer from '../components/Footer';
 import MobileBottomBar from '../components/MobileBottomBar';
-import BookingForm from '../components/BookingForm';
-import { PHONE, PHONE_HREF } from '../components/constants';
+import { PHONE, PHONE_HREF, WORKIZ_URL } from '../components/constants';
 import SmartImg from '../components/SmartImg';
+import { buildWorkizUrl } from '../lib/tracking';
 import { MEDIA, FALLBACK } from './media';
 
 const M = MEDIA.sameday;
@@ -317,12 +317,14 @@ function SameDayFAQ() {
 }
 
 function SameDayFinalCTA() {
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+  const workizUrl = useMemo(() => buildWorkizUrl(WORKIZ_URL), []);
   return (
     <section className="finalcta section" id="quote">
       <div className="finalcta-inner" style={{ maxWidth: 960 }}>
         <h2>LET'S TALK <span className="green">JUNK.</span></h2>
         <p className="sub">
-          Call us now — or fill out the form below and we'll reach out to confirm.
+          Call us now — or pick a slot below and we'll reach out to confirm.
           Same-day windows go fast.
         </p>
         <a href={PHONE_HREF} className="btn btn-primary callbtn">
@@ -333,11 +335,29 @@ function SameDayFinalCTA() {
           <div className="booking-head">
             <div className="booking-head-l">
               <h3>BOOK YOUR PICKUP</h3>
-              <p>We'll text to confirm a window. Most same-day slots book before noon.</p>
+              <p>We'll confirm a window. Most same-day slots book before noon.</p>
             </div>
             <span className="booking-badge">★ $20 OFF APPLIED</span>
           </div>
-          <BookingForm defaultService="Same-day pickup" />
+          <div className="iframe-wrap">
+            <div className={'iframe-loading' + (iframeLoaded ? ' hidden' : '')}>
+              <div className="spinner" aria-hidden="true" />
+              <div>Loading secure booking…</div>
+            </div>
+            <iframe
+              src={workizUrl}
+              title="JEDI Junk Removal — book a same-day pickup"
+              loading="lazy"
+              allow="payment; geolocation; clipboard-write"
+              onLoad={() => setIframeLoaded(true)}
+            />
+          </div>
+          <div className="booking-foot">
+            Trouble with the form?{' '}
+            <a href={PHONE_HREF} className="phone-fallback">Call {PHONE}</a>
+            {' · '}
+            <span className="green">$20 off</span> applied automatically when you book online.
+          </div>
         </div>
       </div>
     </section>
