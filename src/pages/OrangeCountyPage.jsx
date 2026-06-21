@@ -3,7 +3,7 @@ import Topbar from '../components/Topbar';
 import Footer from '../components/Footer';
 import MobileBottomBar from '../components/MobileBottomBar';
 import PricingStrip from '../components/PricingStrip';
-import { PHONE, PHONE_HREF, WORKIZ_URL } from '../components/constants';
+import { PHONE, PHONE_HREF, ADDRESS, WORKIZ_URL } from '../components/constants';
 import SmartImg from '../components/SmartImg';
 import { buildWorkizUrl } from '../lib/tracking';
 import { MEDIA, FALLBACK } from './media';
@@ -238,8 +238,7 @@ function LocalCrewHours() {
             </ul>
             <div className="hours-addr">
               JEDI Junk Removal · Serving all of Orange County<br />
-              HQ: 14930 Ventura Blvd, Sherman Oaks, CA 91403<br />
-              hello@jedijunk.com
+              HQ: {ADDRESS}
             </div>
           </div>
         </div>

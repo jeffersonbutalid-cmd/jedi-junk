@@ -1,9 +1,14 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
-import { readAttribution } from '../lib/tracking';
+import { useState, useEffect, useRef } from 'react';
+import { readAttribution, captureAttribution } from '../lib/tracking';
 import { pushEvent } from '../lib/analytics';
-import { PHONE, PHONE_HREF, GOOGLE_MAPS_API_KEY } from './constants';
-
-const ZAP_ENDPOINT = 'https://hooks.zapier.com/hooks/catch/11805929/4ox6t4x/';
+import {
+  PHONE,
+  PHONE_HREF,
+  GOOGLE_MAPS_API_KEY,
+  ZAPIER_HOOK_URL,
+  AW_CONVERSION_ID,
+  AW_CONVERSION_LABEL,
+} from './constants';
 
 const JOB_OPTIONS = [
   'Whole house',
@@ -103,6 +108,10 @@ export default function CleanoutForm({ defaultJobType = '' }) {
   const zipRef = useRef(null);
   const cityRef = useRef(null);
 
+  // Capture + persist ad attribution (gclid/gbraid/wbraid/utm_*) on mount, so
+  // it survives ?job= navigation and is available at submit time.
+  useEffect(() => { captureAttribution(); }, []);
+
   // Keep defaultJobType in sync when ?job= changes
   useEffect(() => { if (defaultJobType) setJobType(defaultJobType); }, [defaultJobType]);
 
@@ -166,21 +175,43 @@ export default function CleanoutForm({ defaultJobType = '' }) {
 
     setStatus('submitting');
 
+    // Pull persisted ad attribution (captured on first load, survives ?job= nav).
     const attr = readAttribution();
+    const zip = String(data.zip || '').trim();
+    const city = String(data.city || '').trim();
+    const nowIso = new Date().toISOString();
+
+    // Payload keys map 1:1 to the leads-sheet column headers. Always send every
+    // key (empty string where not collected) so the Zap's Create Row maps cleanly.
     const payload = {
-      ...data,
-      job_type: jobType,
-      job_size: jobSize,
-      service: jobType, // Mirror into "service" so the Zap's existing sheet mapping still works
+      submitted_at: nowIso,
+      name: data.name || '',
       phone: sheetSafePhone(data.phone),
-      zip: String(data.zip || '').trim(),
-      ...attr,
-      page_path: window.location.pathname,
-      page_url: window.location.href,
-      submitted_at: new Date().toISOString(),
+      email: data.email || '',
+      address: [zip, city].filter(Boolean).join(' '),       // ZIP + City the form collects
+      service: jobType || '',                                // "What needs clearing?"
+      preferred_date: data.preferred_date || '',
+      preferred_time: data.preferred_time || '',
+      details: [jobSize, data.details].filter(Boolean).join(' — '), // "Roughly how much?" + notes
+      gclid: attr.gclid || '',
+      gbraid: attr.gbraid || '',
+      wbraid: attr.wbraid || '',
+      utm_source: attr.utm_source || '',
+      utm_medium: attr.utm_medium || '',
+      utm_campaign: attr.utm_campaign || '',
+      utm_term: attr.utm_term || '',
+      utm_content: attr.utm_content || '',
+      landing_page: attr.landing_page || window.location.href,
+      referrer: (attr.referrer && attr.referrer !== '(direct)') ? attr.referrer : (document.referrer || ''),
+      page_path: window.location.pathname + window.location.search,
+      conversion_name: 'form submission',
+      conversion_time: nowIso,
+      conversion_value: '',
+      'photo URL': '',  // Filled by a Zapier "Upload to Drive" step from the base64 below.
     };
 
-    // Compress + base64 each photo, post as photo_1_base64, photo_2_base64, ...
+    // Photos: compressed + base64 as side keys for the Zap to upload to storage.
+    // 'photo URL' stays empty here; the Zap writes the resulting URL into it.
     if (photos.length) {
       try {
         for (let i = 0; i < photos.length; i++) {
@@ -194,35 +225,25 @@ export default function CleanoutForm({ defaultJobType = '' }) {
       }
     }
 
-    // GA4 generate_lead + Google Ads click-tag conversion fire
     try {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: 'generate_lead',
-        job_type: jobType,
-        job_size: jobSize,
-        zip: payload.zip,
-      });
-    } catch (_e) {}
-
-    pushEvent('lead_form_submit', {
-      service: jobType,
-      job_size: jobSize,
-      zip: payload.zip,
-      page_path: window.location.pathname,
-      has_photo: photos.length > 0,
-    });
-
-    try {
-      const formBody = new URLSearchParams();
-      Object.entries(payload).forEach(([k, v]) => {
-        formBody.append(k, v == null ? '' : String(v));
-      });
-      await fetch(ZAP_ENDPOINT, {
+      // POST JSON so the Zap's Create Row maps keys → column headers exactly.
+      await fetch(ZAPIER_HOOK_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: formBody.toString(),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
+
+      // Conversion signals (no PII). dataLayer event drives any GTM-based Ads
+      // tag; the gtag conversion fires only once real Ads IDs are configured.
+      try {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'lead_submit', job_type: jobType, job_size: jobSize, zip });
+        if (typeof window.gtag === 'function' && AW_CONVERSION_ID && AW_CONVERSION_LABEL) {
+          window.gtag('event', 'conversion', { send_to: `${AW_CONVERSION_ID}/${AW_CONVERSION_LABEL}` });
+        }
+      } catch (_e) {}
+      pushEvent('lead_form_submit', { service: jobType, job_size: jobSize, zip, has_photo: photos.length > 0 });
+
       window.location.assign('/booking-thank-you');
     } catch (_err) {
       setStatus('error');

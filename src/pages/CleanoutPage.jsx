@@ -100,10 +100,11 @@ function CleanoutHero({ variant, city }) {
       <div className="clo-hero-inner">
         <div className="clo-hero-copy">
           <div className="clo-hero-eyebrow">
-            <span className="clo-chip">★ #1 RATED · LICENSED &amp; INSURED · FAMILY-OWNED</span>
+            <span className="clo-chip">★ #1 RATED · LICENSED &amp; INSURED · FAMILY-OWNED &amp; LOCALLY-OPERATED</span>
           </div>
           <h1 className="clo-h1">{h1}</h1>
           <p className="clo-subhead">{subhead}</p>
+          <p className="clo-hero-tagline">We use the power of the FORCE to remove all of your junk!</p>
           <div className="clo-hero-ctas">
             <a href="#form" className="clo-btn clo-btn-primary">GET MY FREE ESTIMATE</a>
             <a
@@ -125,7 +126,7 @@ function CleanoutHero({ variant, city }) {
           </div>
         </div>
         <div className="clo-hero-photo">
-          {/* TODO: client to drop in real before/after photo of a LARGE haul */}
+          {/* Swap src for a real before/after of a large haul when available. */}
           <img
             src="/assets/garage-before.png"
             alt={variant.heroAlt}
@@ -215,37 +216,52 @@ function Proof() {
           <div className="clo-stars" aria-label="5 out of 5 stars">★★★★★</div>
         </div>
         <div className="clo-badges">
-          <div className="clo-badge">
-            <div className="clo-badge-name">Google</div>
-            <div className="clo-badge-score">5.0 ★</div>
-            <div className="clo-badge-count">TODO: confirm review count</div>
-          </div>
-          <div className="clo-badge">
-            <div className="clo-badge-name">Yelp</div>
-            <div className="clo-badge-score">5.0 ★</div>
-            <div className="clo-badge-count">TODO: confirm review count</div>
-          </div>
-          <div className="clo-badge">
-            <div className="clo-badge-name">Thumbtack</div>
-            <div className="clo-badge-score">Top Pro</div>
-            <div className="clo-badge-count">TODO: confirm review count</div>
-          </div>
+          {REVIEW_BADGES.map((b) => (
+            <div className="clo-badge" key={b}>
+              <div className="clo-badge-name">{b}</div>
+              <div className="clo-badge-score">5.0 ★</div>
+            </div>
+          ))}
         </div>
-        <blockquote className="clo-testimonial">
-          <p>"They cleared my late mother's entire house in a day — respectful and fast."</p>
-          <footer>
-            <span className="clo-test-name">— Example testimonial</span>
-            <span className="clo-test-note">TODO: replace with client-approved quote</span>
-          </footer>
-        </blockquote>
+        <div className="clo-testimonials">
+          {TESTIMONIALS.map((t) => (
+            <blockquote className="clo-testimonial" key={t.headline}>
+              <div className="clo-test-headline">{t.headline}</div>
+              <p>{t.quote}</p>
+              <footer>
+                <span className="clo-test-name">— Verified JEDI customer</span>
+              </footer>
+            </blockquote>
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
+const REVIEW_BADGES = ['Google', 'Yelp', 'Thumbtack', 'Facebook'];
+
+const TESTIMONIALS = [
+  {
+    headline: 'Got the job done in 30 minutes!',
+    quote:
+      "I booked them around 6 PM the day before… they arrived on time, were super friendly, gave me clear pricing, knocked out the garage in about 30 minutes and were on their way.",
+  },
+  {
+    headline: 'Jedi was a lifesaver!',
+    quote:
+      "They gave us same-day service during a hectic move and even accommodated a time change. Very nice and helpful. I highly recommend them for junk/household removal.",
+  },
+  {
+    headline: 'Nice and professional!',
+    quote:
+      "I needed a lot of cardboard removed after a move. They came the day after I called, were professional, and gave me a price before removing anything. Such a big help.",
+  },
+];
+
 const REGIONS = [
   { name: 'Los Angeles', cities: 'Pasadena · Beverly Hills · Long Beach · Burbank · West LA · Eagle Rock' },
-  { name: 'San Fernando Valley', cities: 'Sherman Oaks · Encino · Studio City · Northridge · Van Nuys · Tarzana' },
+  { name: 'San Fernando Valley', cities: 'Woodland Hills · Encino · Studio City · Northridge · Van Nuys · Tarzana' },
   { name: 'Orange County', cities: 'Irvine · Anaheim · Newport Beach · Santa Ana · Costa Mesa · Huntington Beach' },
   { name: 'Ventura County', cities: 'Thousand Oaks · Ventura · Oxnard · Camarillo · Simi Valley · Westlake Village' },
 ];

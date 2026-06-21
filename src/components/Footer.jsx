@@ -1,4 +1,4 @@
-import { PHONE, PHONE_HREF } from './constants';
+import { PHONE, PHONE_HREF, ADDRESS, HOURS, PAYMENTS, TRUST_LINE } from './constants';
 
 const logoSrc = '/assets/logo-horizontal.jpg';
 
@@ -27,16 +27,15 @@ export default function Footer({
           <div className="footer-h">CONTACT</div>
           <ul>
             <li><a href={PHONE_HREF} className="footer-phone-link">📞 {PHONE}</a></li>
-            <li><a href="mailto:hello@jedijunk.com">hello@jedijunk.com</a></li>
-            <li>14930 Ventura Blvd<br />Sherman Oaks, CA 91403</li>
+            <li>{ADDRESS}</li>
           </ul>
         </div>
         <div>
           <div className="footer-h">HOURS</div>
           <ul>
-            <li>Mon–Sat · 7AM – 7PM</li>
-            <li>Sunday · 8AM – 5PM</li>
-            <li>After-hours by arrangement</li>
+            <li>{HOURS}</li>
+            <li>Same-day / next-day available</li>
+            <li>{PAYMENTS}</li>
           </ul>
         </div>
         <div>
@@ -49,8 +48,8 @@ export default function Footer({
         </div>
       </div>
       <div className="footer-bottom">
-        <span>© 2026 JEDI Junk Removal · CA Lic. # 1098234 · $2M Insured</span>
-        <span>Made in the Valley.</span>
+        <span>© 2026 JEDI Junk Removal · {TRUST_LINE} · $2M Insured</span>
+        <span>If you want it gone, it's gone.</span>
       </div>
     </footer>
   );
