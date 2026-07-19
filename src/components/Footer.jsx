@@ -11,6 +11,14 @@ const DEFAULT_SERVICE_LINKS = [
 
 const DEFAULT_TAGLINE = 'Family-owned, full-service junk removal across LA, Ventura, Orange County and the Valley.';
 
+// Shared region links — rendered on every page's footer.
+const REGION_LINKS = [
+  { label: 'Orange County', href: '/orange-county' },
+  { label: 'Los Angeles', href: '/los-angeles' },
+  { label: 'San Fernando Valley', href: '/los-angeles' },
+  { label: 'Ventura County', href: '/' },
+];
+
 export default function Footer({
   serviceLinks = DEFAULT_SERVICE_LINKS,
   serviceHeading = 'SERVICE',
@@ -36,6 +44,14 @@ export default function Footer({
             <li>{HOURS}</li>
             <li>Same-day / next-day available</li>
             <li>{PAYMENTS}</li>
+          </ul>
+        </div>
+        <div>
+          <div className="footer-h">REGIONS</div>
+          <ul>
+            {REGION_LINKS.map(link => (
+              <li key={link.label}><a href={link.href}>{link.label}</a></li>
+            ))}
           </ul>
         </div>
         <div>

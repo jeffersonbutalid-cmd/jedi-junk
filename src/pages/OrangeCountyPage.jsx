@@ -3,6 +3,7 @@ import Topbar from '../components/Topbar';
 import Footer from '../components/Footer';
 import MobileBottomBar from '../components/MobileBottomBar';
 import PricingStrip from '../components/PricingStrip';
+import BeforeAfter from '../components/BeforeAfter';
 import { PHONE, PHONE_HREF, ADDRESS, WORKIZ_URL } from '../components/constants';
 import SmartImg from '../components/SmartImg';
 import { buildWorkizUrl } from '../lib/tracking';
@@ -55,11 +56,14 @@ function OCHero() {
           </div>
         </div>
         <div className="hero-photo">
-          <SmartImg
-            className="hero-img-single"
-            src={M.hero}
-            fallback={FALLBACK.photo}
-            alt="JEDI Junk Removal truck on an Orange County street"
+          <BeforeAfter
+            beforeSrc={M.before}
+            afterSrc={M.after}
+            beforeFallback={FALLBACK.before}
+            afterFallback={FALLBACK.after}
+            beforeAlt="Cluttered Orange County garage before JEDI junk removal"
+            afterAlt="Empty garage after JEDI Orange County junk removal"
+            initialPos={55}
           />
         </div>
       </div>
@@ -405,11 +409,11 @@ function OCFinalCTA() {
   );
 }
 
-const OC_REGION_LINKS = [
-  { label: 'Orange County', href: '#top' },
-  { label: 'Los Angeles', href: '/same-day' },
-  { label: 'San Fernando Valley', href: '/same-day' },
-  { label: 'Ventura County', href: '/same-day' },
+const OC_SERVICE_LINKS = [
+  { label: 'Same-day removal', href: '/same-day' },
+  { label: 'Cleanouts', href: '/cleanouts' },
+  { label: 'Mattress removal', href: '/mattress-removal' },
+  { label: 'Junk hauling', href: '/junk-hauling' },
 ];
 
 const OC_TAGLINE = 'Family-owned junk removal serving Orange County, LA, the San Fernando Valley, and Ventura.';
@@ -440,7 +444,7 @@ export default function OrangeCountyPage() {
       <OCReviews />
       <OCFAQ />
       <OCFinalCTA />
-      <Footer serviceLinks={OC_REGION_LINKS} serviceHeading="REGIONS" tagline={OC_TAGLINE} />
+      <Footer serviceLinks={OC_SERVICE_LINKS} tagline={OC_TAGLINE} />
       <div className="mobile-spacer" aria-hidden="true" />
       <MobileBottomBar
         quoteLabel="BOOK OC PICKUP"

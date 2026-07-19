@@ -36,9 +36,18 @@ export const MEDIA = {
     photo: A + 'truck-beauty.png',
   },
   orangecounty: {
-    slider: false,
+    slider: true,
+    before: A + 'garage-before.png',
+    after: A + 'garage-after.png',
     hero: A + 'truck-beauty.png',
     photo: A + 'jedi-truck-street.jpg',
+  },
+  losangeles: {
+    slider: true,
+    before: A + 'garage-before.png',
+    after: A + 'garage-after.png',
+    hero: A + 'jedi-truck-street.jpg',
+    photo: A + 'truck-beauty.png',
   },
 };
 

@@ -1,10 +1,10 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Topbar from '../components/Topbar';
 import Footer from '../components/Footer';
 import MobileBottomBar from '../components/MobileBottomBar';
-import CleanoutForm from '../components/CleanoutForm';
-import { PHONE, PHONE_HREF } from '../components/constants';
+import { PHONE, PHONE_HREF, WORKIZ_URL } from '../components/constants';
+import { buildWorkizUrl } from '../lib/tracking';
 
 const CALL_HREF = PHONE_HREF;
 
@@ -161,18 +161,45 @@ function ValueStrip() {
   );
 }
 
-function FormSection({ variant, introLine }) {
+function FormSection({ introLine }) {
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+  const workizUrl = useMemo(() => buildWorkizUrl(WORKIZ_URL), []);
   return (
     <section className="clo-formsec" id="form">
       <div className="clo-formsec-inner">
         <div className="clo-formsec-head">
-          <div className="clo-eyebrow">TELL US ABOUT THE JOB</div>
+          <div className="clo-eyebrow">BOOK YOUR CLEANOUT</div>
           <h2 className="clo-h2">{introLine}</h2>
           <p className="clo-formsec-sub">
-            Two quick questions, then your contact info. We'll text you back with an upfront price.
+            Pick a window below and we'll confirm by text with an upfront price. Prefer to talk? Call {PHONE}.
           </p>
         </div>
-        <CleanoutForm defaultJobType={variant.jobType} />
+        <div className="booking-card" id="book">
+          <div className="booking-head">
+            <div className="booking-head-l">
+              <h3>BOOK YOUR CLEANOUT</h3>
+              <p>Pick a window. Tell us what's going. We confirm by text.</p>
+            </div>
+            <span className="booking-badge">★ FREE WALK-THROUGH</span>
+          </div>
+          <div className="iframe-wrap">
+            <div className={'iframe-loading' + (iframeLoaded ? ' hidden' : '')}>
+              <div className="spinner" aria-hidden="true" />
+              <div>Loading secure booking…</div>
+            </div>
+            <iframe
+              src={workizUrl}
+              title="JEDI Junk Removal — book a cleanout"
+              loading="lazy"
+              allow="payment; geolocation; clipboard-write"
+              onLoad={() => setIframeLoaded(true)}
+            />
+          </div>
+          <div className="booking-foot">
+            Trouble with the form?{' '}
+            <a href={PHONE_HREF} className="phone-fallback">Call {PHONE}</a>
+          </div>
+        </div>
       </div>
     </section>
   );
