@@ -3,8 +3,12 @@ import { useSearchParams } from 'react-router-dom';
 import Topbar from '../components/Topbar';
 import Footer from '../components/Footer';
 import MobileBottomBar from '../components/MobileBottomBar';
+import BeforeAfter from '../components/BeforeAfter';
 import { PHONE, PHONE_HREF, WORKIZ_URL } from '../components/constants';
 import { buildWorkizUrl } from '../lib/tracking';
+import { MEDIA, FALLBACK } from './media';
+
+const M = MEDIA.cleanout;
 
 const CALL_HREF = PHONE_HREF;
 
@@ -125,15 +129,16 @@ function CleanoutHero({ variant, city }) {
             $20 off when you book online
           </div>
         </div>
-        <div className="clo-hero-photo">
-          {/* Swap src for a real before/after of a large haul when available. */}
-          <img
-            src="/assets/garage-before.png"
-            alt={variant.heroAlt}
-            className="clo-hero-img"
-            loading="eager"
+        <div className="clo-hero-photo clo-hero-ba">
+          <BeforeAfter
+            beforeSrc={M.before}
+            afterSrc={M.after}
+            beforeFallback={FALLBACK.before}
+            afterFallback={FALLBACK.after}
+            beforeAlt={variant.heroAlt}
+            afterAlt="Cleared and swept after the JEDI cleanout — same space, empty"
+            initialPos={55}
           />
-          <div className="clo-hero-photo-label">BEFORE → AFTER · Real JEDI Job</div>
         </div>
       </div>
     </section>

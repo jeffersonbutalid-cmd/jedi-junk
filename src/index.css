@@ -2434,3 +2434,14 @@ input, textarea, select { font-family: inherit; }
   letter-spacing: 0.02em;
   color: var(--gray-700);
 }
+
+/* /cleanouts hero — before/after slider container (BeforeAfter fills inset:0) */
+.clo-hero-ba {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.18);
+  background: #1a1a1a;
+  user-select: none;
+}
