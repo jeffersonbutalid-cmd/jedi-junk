@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { pushEvent, BOOKING_THANKYOU_TOKEN } from '../lib/analytics';
-import { captureAttribution } from '../lib/tracking';
+import { captureAttribution, sendBookingCapture } from '../lib/tracking';
 
 function fireBookingComplete(source) {
   try {
@@ -13,6 +13,7 @@ function fireBookingComplete(source) {
     page_path: window.location.pathname,
     source: source || 'url',
   });
+  sendBookingCapture(source);
 }
 
 function isThankYou() {

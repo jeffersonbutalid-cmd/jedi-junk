@@ -61,3 +61,19 @@ export function captureAttribution() {
   if (changed) write(stored);
   return stored;
 }
+
+// Send the stored click IDs to our own Netlify Function when a booking
+// completes, so the booking time can be joined to the Workiz job later.
+// No personal data: Workiz holds the customer details, this holds the click.
+export function sendBookingCapture(source) {
+  try {
+    const attr = readAttribution();
+    const payload = { client_time: new Date().toISOString(), page_path: window.location.pathname, source: source || 'url' };
+    PARAMS.forEach((k) => { if (attr[k]) payload[k] = String(attr[k]); });
+    ['landing_page', 'referrer', 'first_seen'].forEach((k) => { if (attr[k]) payload[k] = String(attr[k]); });
+    const body = JSON.stringify(payload);
+    const url = '/.netlify/functions/booking-capture';
+    if (navigator.sendBeacon && navigator.sendBeacon(url, new Blob([body], { type: 'application/json' }))) return;
+    fetch(url, { method: 'POST', body, headers: { 'content-type': 'application/json' }, keepalive: true }).catch(() => {});
+  } catch (e) {}
+}
