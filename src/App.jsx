@@ -5,6 +5,7 @@ import MattressPage from './pages/MattressPage';
 import JunkHaulingPage from './pages/JunkHaulingPage';
 import OrangeCountyPage from './pages/OrangeCountyPage';
 import LosAngelesPage from './pages/LosAngelesPage';
+import VenturaPage from './pages/VenturaPage';
 import ThankYouPage from './pages/ThankYouPage';
 import DashboardPage from './pages/DashboardPage';
 import Analytics from './components/Analytics';
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="/junk-hauling" element={<JunkHaulingPage />} />
         <Route path="/orange-county" element={<OrangeCountyPage />} />
         <Route path="/los-angeles" element={<LosAngelesPage />} />
+        <Route path="/ventura" element={<VenturaPage />} />
         <Route path="/booking-thank-you" element={<ThankYouPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         {/* No silent fallback: unknown client-side routes go home */}

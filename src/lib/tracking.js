@@ -34,7 +34,9 @@ export function readAttribution() {
 // so Workiz Ultimate hidden custom fields pre-fill with the attribution data.
 export function buildWorkizUrl(baseUrl) {
   try {
-    const attr = readAttribution();
+    // Capture first: pages build the iframe URL during their first render,
+    // before Analytics' effect has stored the landing click IDs.
+    const attr = captureAttribution();
     const u = new URL(baseUrl);
     PARAMS.forEach((k) => { if (attr[k]) u.searchParams.set(k, attr[k]); });
     if (attr.landing_page) u.searchParams.set('landing_page', attr.landing_page);

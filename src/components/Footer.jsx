@@ -16,13 +16,15 @@ const REGION_LINKS = [
   { label: 'Orange County', href: '/orange-county' },
   { label: 'Los Angeles', href: '/los-angeles' },
   { label: 'San Fernando Valley', href: '/los-angeles' },
-  { label: 'Ventura County', href: '/' },
+  { label: 'Ventura County', href: '/ventura' },
 ];
 
 export default function Footer({
   serviceLinks = DEFAULT_SERVICE_LINKS,
   serviceHeading = 'SERVICE',
   tagline = DEFAULT_TAGLINE,
+  hours = HOURS,
+  trustLine = `${TRUST_LINE} · $2M Insured`,
 }) {
   return (
     <footer className="footer">
@@ -41,7 +43,7 @@ export default function Footer({
         <div>
           <div className="footer-h">HOURS</div>
           <ul>
-            <li>{HOURS}</li>
+            <li>{hours}</li>
             <li>Same-day / next-day available</li>
             <li>{PAYMENTS}</li>
           </ul>
@@ -64,7 +66,7 @@ export default function Footer({
         </div>
       </div>
       <div className="footer-bottom">
-        <span>© 2026 JEDI Junk Removal · {TRUST_LINE} · $2M Insured</span>
+        <span>© 2026 JEDI Junk Removal · {trustLine}</span>
         <span>If you want it gone, it's gone.</span>
       </div>
     </footer>

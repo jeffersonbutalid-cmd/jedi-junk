@@ -42,6 +42,13 @@ export const MEDIA = {
     hero: A + 'truck-beauty.png',
     photo: A + 'jedi-truck-street.jpg',
   },
+  // Ventura: garage slider + the real black JEDI hauler with the green panel.
+  ventura: {
+    slider: true,
+    before: A + 'garage-before.png',
+    after: A + 'garage-after.png',
+    photo: A + 'jedi-truck-real.jpg',
+  },
   losangeles: {
     slider: true,
     before: A + 'garage-before.png',
